@@ -26,7 +26,7 @@ class AuthPage(BasePage):
         self.wait_for_visible(loc.password).send_keys(password)
         recovery_active = self.wait_for_visible(loc.recovery_conf_active)
         assert "ant-switch-checked" in recovery_active.get_attribute("class")
-        sleep(2)
+        # sleep(2)
         self.wait_for_clickable(loc.auth_button).click()
 
     def auth_inactive_recovery_conf(self, login, password):
@@ -34,10 +34,10 @@ class AuthPage(BasePage):
         self.wait_for_visible(loc.password).send_keys(password)
         recovery_active = self.wait_for_visible(loc.recovery_conf_active)
         assert "ant-switch-checked" in recovery_active.get_attribute("class")
-        sleep(2)
+#         sleep(2)
         recovery_active.click()
         assert "ant-switch-checked" not in recovery_active.get_attribute("class")
-        sleep(2)
+#         sleep(2)
         self.wait_for_clickable(loc.auth_button).click()
 
     def auth_correct_login_and_password(self, login, password):
