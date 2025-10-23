@@ -6,6 +6,9 @@ from time import sleep
 class AuthPage(BasePage):
     page_url = '/auth'
 
+    def __init__(self, driver):
+        super().__init__(driver)
+
     def auth_incorrect_login(self, login, password):
         self.wait_for_visible(loc.login).send_keys(login)
         self.wait_for_visible(loc.password).send_keys(password)

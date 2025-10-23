@@ -4,6 +4,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 
 from pages.auth_page import AuthPage
+from pages.profiles_page import ProfilesPage
 
 
 @pytest.fixture()
@@ -23,9 +24,16 @@ def driver():
 
 @pytest.fixture()
 def auth_page(driver):
+    """Инициализация страницы авторизации"""
     return AuthPage(driver)
 
 @pytest.fixture()
+def profiles_page(driver):
+    """Инициализация страницы профилей"""
+    return ProfilesPage(driver)
+
+@pytest.fixture()
 def auth(auth_page):
+    """Фикстура для авторизации"""
     auth_page.open()
     auth_page.auth_correct_login_and_password('0', '321')
