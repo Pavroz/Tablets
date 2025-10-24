@@ -11,14 +11,14 @@ from pages.profiles_page import ProfilesPage
 def driver():
     """Создает и возвращает веб-драйвер с настройками"""
     options = Options()
-    # # Для веба
-    # options.add_argument("--start-maximized")
-    # options.add_argument("--incognito")
-    # options.add_argument("--disable-cache")  # Отключает кэш
-    # Для CI
-    options.add_argument('--headless')
-    options.add_argument('--no-sandbox')
-    options.add_argument('--disable-dev-shm-usage')
+    # Для ручного запуска
+    options.add_argument("--start-maximized")
+    options.add_argument("--incognito")
+    options.add_argument("--disable-cache")  # Отключает кэш
+    ## Для CI
+    # options.add_argument('--headless')
+    # options.add_argument('--no-sandbox')
+    # options.add_argument('--disable-dev-shm-usage')
     driver = webdriver.Chrome(options=options)
     yield driver
 
