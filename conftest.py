@@ -21,6 +21,7 @@ def driver():
     # options.add_argument('--disable-dev-shm-usage')
     driver = webdriver.Chrome(options=options)
     yield driver
+    driver.quit()
 
 @pytest.fixture()
 def auth_page(driver):

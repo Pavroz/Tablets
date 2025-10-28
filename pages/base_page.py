@@ -3,7 +3,7 @@ from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.ui import WebDriverWait
-
+import allure
 
 class BasePage:
     base_url = 'http://arm-tablets.01-bfv-server.stroki.loc'
@@ -14,10 +14,11 @@ class BasePage:
         self.driver = driver
 
     def open(self):
-        if self.page_url:
-            self.driver.get(f'{self.base_url}{self.page_url}')
-        else:
-            self.driver.get(self.base_url)
+        with allure.step('Открытие браузера'):
+            if self.page_url:
+                self.driver.get(f'{self.base_url}{self.page_url}')
+            else:
+                self.driver.get(self.base_url)
 
     # ФУНКЦИИ ДЛЯ ОЖИДАНИЙ
     def wait_for_clickable(self, locator, timeout: int = None) -> WebElement:
