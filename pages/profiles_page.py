@@ -73,6 +73,7 @@ class ProfilesPage(BasePage):
 
 
     def edit_name_profile(self, name_profile, new_name_profile):
+        # Поиск кнопки редактирования
         edit_button = self.wait_for_clickable(
             (By.XPATH,
              f'//*[contains(text(), "{name_profile}")]//ancestor::prominform-profile-card//span[@nztype="edit"]')
@@ -86,18 +87,44 @@ class ProfilesPage(BasePage):
 
 
     def edit_description_profile(self, name_profile, new_description_profile):
+        # Поиск кнопки редактирования
         edit_button = self.wait_for_clickable(
             (By.XPATH,
              f'//*[contains(text(), "{name_profile}")]//ancestor::prominform-profile-card//span[@nztype="edit"]')
         )
         edit_button.click()
-        description = self.wait_for_visible(loc.description_field)
-        description.clear()
-        description.send_keys(new_description_profile)
+        description_field = self.wait_for_visible(loc.description_field)
+        description_field.clear()
+        description_field.send_keys(new_description_profile)
         self.wait_for_clickable(loc.apply_modals_button).click()
         # assert self.wait_for_presence((By.XPATH, f'//*[contains(text(), "{name_profile}")]'))
 
-    def edit_full_profile(self):
-        pass
-    def copy_profile(self):
-        pass
+    def edit_full_profile(self, name_profile, new_name_profile, new_description_profile=None):
+        edit_button = self.wait_for_clickable(
+            (By.XPATH,
+             f'//*[contains(text(), "{name_profile}")]//ancestor::prominform-profile-card//span[@nztype="edit"]')
+        )
+        edit_button.click()
+        name_field = self.wait_for_visible(loc.name_field)
+        name_field.clear()
+        name_field.send_keys(new_name_profile)
+        description_field = self.wait_for_visible(loc.description_field)
+        description_field.clear()
+        description_field.send_keys(new_description_profile)
+        self.wait_for_clickable(loc.apply_modals_button).click()
+        assert self.wait_for_presence((By.XPATH, f'//*[contains(text(), "{new_name_profile}")]'))
+
+    def copy_profile(self, name_profile, new_name_profile, new_description_profile=None):
+        copy_button = self.wait_for_clickable(
+            (By.XPATH,
+             f'//*[contains(text(), "{name_profile}")]//ancestor::prominform-profile-card//span[@nztype="copy"]')
+        )
+        copy_button.click()
+        name_field = self.wait_for_visible(loc.name_field)
+        name_field.clear()
+        name_field.send_keys(new_name_profile)
+        description_field = self.wait_for_visible(loc.description_field)
+        description_field.clear()
+        description_field.send_keys(new_description_profile)
+        self.wait_for_clickable(loc.apply_modals_button).click()
+        assert self.wait_for_presence((By.XPATH, f'//*[contains(text(), "{new_name_profile}")]'))

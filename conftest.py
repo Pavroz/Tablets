@@ -37,3 +37,10 @@ def auth(auth_page):
     """Фикстура для авторизации"""
     auth_page.open()
     auth_page.auth_correct_login_and_password('0', '321')
+
+# @pytest.fixture()
+# def create_and_delete_profile(profiles_page):
+#     name_profile = 'autotest'
+#     profiles_page.create_profile()
+#     yield
+#     profiles_page.delete_profile(name_profile)
