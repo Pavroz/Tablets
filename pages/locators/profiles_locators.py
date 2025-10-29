@@ -7,11 +7,12 @@ name_cart = (By.CSS_SELECTOR, ".profile-card__title span[nz-typography]") # По
 # get_all_profiles = (By.CSS_SELECTOR, 'div prominform-profile-card') # карточки профилей
 # profile_name_in_card = (By.CSS_SELECTOR, 'span.ant-typography') # название внутри карточки
 
-# Кнопки создания, редактирования и копирования профиля
+# Кнопки создания, редактирования, копирования и активации профиля
 create_profile_button = (
     By.XPATH, '//span[contains(text(), "Создать профиль")]')
 edit_profile_button = (By.CSS_SELECTOR, 'span[nztype="edit"]')
 copy_profile_button = (By.CSS_SELECTOR, 'span[nztype="copy"]')
+activate_profile_button = (By.CSS_SELECTOR, 'nz-switch[nzsize="small"]')
 
 # Кнопка удаления профиля с подтверждением
 delete_profile_button = (By.CSS_SELECTOR, 'span[nztype="delete"]')

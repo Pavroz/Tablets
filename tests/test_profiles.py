@@ -1,44 +1,58 @@
+import allure
 import pytest
-from time import sleep
+
 
 name_profile = 'autotest'
 new_name_profile = 'АВТОТЕСТОВОЕ НАИМЕНОВАНИЕ ПРОФИЛЯ'
 new_description_profile = 'АВТОТЕСТОВОЕ ОПИСАНИЕ'
 
-import pytest
-import os
 
-@pytest.mark.profiles
-def test_create_profile(auth, profiles_page):
-    profiles_page.create_profile(name_profile)
-    profiles_page.delete_profile(name_profile)
+@allure.feature('Страница профилей')
+class TestProfiles:
 
-@pytest.mark.profiles
-def test_delete_profile(auth, profiles_page):
-    profiles_page.create_profile(name_profile)
-    profiles_page.delete_profile(name_profile)
+    @allure.story('Позитивные сценарии')
+    @allure.title('Проверка создания профиля')
+    @pytest.mark.profiles
+    def test_create_profile(self, auth, profiles_page):
+        profiles_page.create_profile(name_profile)
+        profiles_page.delete_profile(name_profile)
 
-@pytest.mark.profiles
-def test_edit_name_profile(auth, profiles_page):
-    profiles_page.create_profile(name_profile)
-    profiles_page.edit_name_profile(name_profile, new_name_profile)
-    profiles_page.delete_profile(new_name_profile)
+    @allure.story('Позитивные сценарии')
+    @allure.title('Проверка удаления профиля')
+    @pytest.mark.profiles
+    def test_delete_profile(self, auth, profiles_page):
+        profiles_page.create_profile(name_profile)
+        profiles_page.delete_profile(name_profile)
 
-@pytest.mark.profiles
-def test_edit_description_profile(auth, profiles_page):
-    profiles_page.create_profile(name_profile)
-    profiles_page.edit_description_profile(name_profile, new_description_profile)
-    # sleep(2)
-    profiles_page.delete_profile(name_profile)
+    @allure.story('Позитивные сценарии')
+    @allure.title('Проверка изменения имени профиля')
+    @pytest.mark.profiles
+    def test_edit_name_profile(self, auth, profiles_page):
+        profiles_page.create_profile(name_profile)
+        profiles_page.edit_name_profile(name_profile, new_name_profile)
+        profiles_page.delete_profile(new_name_profile)
 
-@pytest.mark.profiles
-def test_edit_full_profile(auth, profiles_page):
-    profiles_page.create_profile(name_profile)
-    profiles_page.edit_full_profile(name_profile, new_name_profile, new_description_profile)
-    profiles_page.delete_profile(new_name_profile)
+    @allure.story('Позитивные сценарии')
+    @allure.title('Проверка изменения описания профиля')
+    @pytest.mark.profiles
+    def test_edit_description_profile(self, auth, profiles_page):
+        profiles_page.create_profile(name_profile)
+        profiles_page.edit_description_profile(name_profile, new_description_profile)
+        # sleep(2)
+        profiles_page.delete_profile(name_profile)
 
-@pytest.mark.profiles
-def test_copy_profile(auth, profiles_page):
-    profiles_page.create_profile(name_profile)
-    profiles_page.edit_full_profile(name_profile, new_name_profile, new_description_profile)
-    profiles_page.delete_profile(new_name_profile)
+    @allure.story('Позитивные сценарии')
+    @allure.title('Проферка изменения имени и описания профиля')
+    @pytest.mark.profiles
+    def test_edit_full_profile(self, auth, profiles_page):
+        profiles_page.create_profile(name_profile)
+        profiles_page.edit_full_profile(name_profile, new_name_profile, new_description_profile)
+        profiles_page.delete_profile(new_name_profile)
+
+    @allure.story('Позитивные сценарии')
+    @allure.title('Проферка копирования профиля')
+    @pytest.mark.profiles
+    def test_copy_profile(self, auth, profiles_page):
+        profiles_page.create_profile(name_profile)
+        profiles_page.edit_full_profile(name_profile, new_name_profile, new_description_profile)
+        profiles_page.delete_profile(new_name_profile)

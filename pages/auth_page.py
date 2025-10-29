@@ -1,6 +1,5 @@
 from pages.base_page import BasePage
 from pages.locators import auth_locators as loc
-from time import sleep
 import allure
 
 class AuthPage(BasePage):

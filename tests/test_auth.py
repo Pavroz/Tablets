@@ -1,10 +1,9 @@
 import pytest
-import pytest
-import os
 import allure
 
 @allure.feature('Авторизация')
 class TestAuth:
+
     @allure.story('Негативные сценарий - невалидные данные')
     @allure.title('Проверка авторизации с некорректным логином')
     @pytest.mark.auth

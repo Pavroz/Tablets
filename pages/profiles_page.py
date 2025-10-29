@@ -1,4 +1,3 @@
-from selenium.webdriver import Keys
 from selenium.webdriver.support.wait import WebDriverWait
 
 from pages.base_page import BasePage
@@ -148,5 +147,10 @@ class ProfilesPage(BasePage):
             description_field.send_keys(new_description_profile)
         with allure.step('Подтверждение копирования'):
             self.wait_for_clickable(loc.apply_modals_button).click()
-        with allure.step('Проверка, профиль успешно скопировался'):
+        with allure.step('Проверка, что профиль успешно скопировался'):
             assert self.wait_for_presence((By.XPATH, f'//*[contains(text(), "{new_name_profile}")]'))
+
+
+    def activate_profile(self, name_profile):
+        activate_button = self.wait_for_clickable(loc.activate_profile_button)
+        activate_button.click()
