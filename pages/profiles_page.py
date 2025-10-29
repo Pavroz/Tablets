@@ -1,3 +1,4 @@
+from selenium.common import StaleElementReferenceException
 from selenium.webdriver.support.wait import WebDriverWait
 
 from pages.base_page import BasePage
@@ -70,27 +71,34 @@ class ProfilesPage(BasePage):
         # self.wait_for_clickable(loc.apply_modals_button).click()
         # ПРОСТАЯ ПРОВЕРКА - ждем появления профиля по имени
         with allure.step(f'Проверка ожидания появления профиля по его имени - "{name}"'):
-            assert self.wait_for_presence((By.XPATH, f'//*[contains(text(), "{name}")]'))
+            assert self.wait_for_presence((By.XPATH, f'//*[text()="{name}"]'))
         return name
-
 
     def delete_profile(self, profile_name):
         """Удаляет профиль по имени"""
         # Находим и кликаем кнопку удаления для профиля с нужным именем
         with allure.step('Нажатие на кнопку удаления'):
-            delete_button = self.wait_for_presence(
-                (By.XPATH,
-                 f'//*[contains(text(), "{profile_name}")]//ancestor::prominform-profile-card//span[@nztype="delete"]')
-            )
+            sleep(1)
+            for attempt in range(3):  # 3 попытки
+                try:
+                    delete_button = self.wait_for_clickable(
+                        (By.XPATH,
+                         f'//*[text()="{profile_name}"]//ancestor::prominform-profile-card//span[@nztype="delete"]')
+                    )
 
-            delete_button.click()
-        with allure.step('Подтверждение удаления'):
-            self.wait_for_clickable(loc.yes_button_from_delete).click()
-        # Ждем исчезновения профиля
-        with allure.step('Ожидание удаления профиля'):
-            assert WebDriverWait(self.driver, 10).until(
-                EC.invisibility_of_element_located((By.XPATH, f'//*[contains(text(), "{profile_name}")]'))
-            )
+                    delete_button.click()
+                    break  # Если клик прошел, выходим из цикла
+                except StaleElementReferenceException:
+                    if attempt == 2:  # Последняя попытка
+                        raise
+                    sleep(1)  # Ждем перед повторной попыткой
+            with allure.step('Подтверждение удаления'):
+                self.wait_for_clickable(loc.yes_button_from_delete).click()
+            # Ждем исчезновения профиля
+            with allure.step('Ожидание удаления профиля'):
+                assert WebDriverWait(self.driver, 10).until(
+                    EC.invisibility_of_element_located((By.XPATH, f'//*[text()="{profile_name}"]'))
+                )
 
 
     def edit_name_profile(self, name_profile):
@@ -99,7 +107,7 @@ class ProfilesPage(BasePage):
         with allure.step('Нажатие на кнопку редактирования'):
             edit_button = self.wait_for_clickable(
                 (By.XPATH,
-                 f'//*[contains(text(), "{name_profile}")]//ancestor::prominform-profile-card//span[@nztype="edit"]')
+                 f'//*[text()="{name_profile}"]//ancestor::prominform-profile-card//span[@nztype="edit"]')
             )
             edit_button.click()
         with allure.step('Очистка и заполнение поля ввода "Наименование"'):
@@ -109,7 +117,7 @@ class ProfilesPage(BasePage):
         with allure.step('Подтверждение редактирования'):
             self.wait_for_clickable(loc.apply_modals_button).click()
         with allure.step('Проверка, что наименование изменилось'):
-            assert self.wait_for_presence((By.XPATH, f'//*[contains(text(), "{new_name_profile}")]'))
+            assert self.wait_for_presence((By.XPATH, f'//*[text()="{new_name_profile}"]'))
         return new_name_profile
 
     def edit_description_profile(self, name_profile):
@@ -119,7 +127,7 @@ class ProfilesPage(BasePage):
         with allure.step('Нажатие на кнопку редактирования'):
             edit_button = self.wait_for_clickable(
                 (By.XPATH,
-                 f'//*[contains(text(), "{name_profile}")]//ancestor::prominform-profile-card//span[@nztype="edit"]')
+                 f'//*[text()="{name_profile}"]//ancestor::prominform-profile-card//span[@nztype="edit"]')
             )
             edit_button.click()
         with allure.step('Очистка и заполнение поля ввода "Описание профиля"'):
@@ -129,7 +137,7 @@ class ProfilesPage(BasePage):
         with allure.step('Подтверждение редактирования'):
             self.wait_for_clickable(loc.apply_modals_button).click()
         with allure.step('Проверка, что описание изменилось'):
-            assert self.wait_for_presence((By.XPATH, f'//*[contains(text(), "{name_profile}")]'))
+            assert self.wait_for_presence((By.XPATH, f'//*[text()="{name_profile}"]'))
         return new_description_profile
 
     def edit_full_profile(self, name_profile):
@@ -138,7 +146,7 @@ class ProfilesPage(BasePage):
         with allure.step('Нажатие на кнопку редактирования'):
             edit_button = self.wait_for_clickable(
                 (By.XPATH,
-                 f'//*[contains(text(), "{name_profile}")]//ancestor::prominform-profile-card//span[@nztype="edit"]')
+                 f'//*[text()="{name_profile}"]//ancestor::prominform-profile-card//span[@nztype="edit"]')
             )
             edit_button.click()
         with allure.step('Очистка и заполнение полей ввода "Наименование" и "Описание профиля"'):
@@ -151,7 +159,7 @@ class ProfilesPage(BasePage):
         with allure.step('Подтверждение редактирования'):
             self.wait_for_clickable(loc.apply_modals_button).click()
         with allure.step('Проверка, что наименование и описание изменились'):
-            assert self.wait_for_presence((By.XPATH, f'//*[contains(text(), "{new_name_profile}")]'))
+            assert self.wait_for_presence((By.XPATH, f'//*[text()="{new_name_profile}"]'))
         return new_name_profile
 
     def copy_profile(self, name_profile):
@@ -160,7 +168,7 @@ class ProfilesPage(BasePage):
         with allure.step('Нажатие на кнопку копирования'):
             copy_button = self.wait_for_clickable(
                 (By.XPATH,
-                 f'//*[contains(text(), "{name_profile}")]//ancestor::prominform-profile-card//span[@nztype="copy"]')
+                 f'//*[text()="{name_profile}"]//ancestor::prominform-profile-card//span[@nztype="copy"]')
             )
             copy_button.click()
         with allure.step('Очистка и заполнение полей ввода "Наименование" и "Описание профиля"'):
@@ -173,7 +181,7 @@ class ProfilesPage(BasePage):
         with allure.step('Подтверждение копирования'):
             self.wait_for_clickable(loc.apply_modals_button).click()
         with allure.step('Проверка, что профиль успешно скопировался'):
-            assert self.wait_for_presence((By.XPATH, f'//*[contains(text(), "{new_name_profile}")]'))
+            assert self.wait_for_presence((By.XPATH, f'//*[text()="{new_name_profile}"]'))
         return new_name_profile
 
     def activate_profile(self, name_profile):
