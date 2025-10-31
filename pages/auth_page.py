@@ -1,3 +1,5 @@
+from time import sleep
+
 from pages.base_page import BasePage
 from pages.locators import auth_locators as loc
 import allure
@@ -37,7 +39,8 @@ class AuthPage(BasePage):
         with allure.step(f'Ввод пароля "{password}"'):
             self.wait_for_visible(loc.password).send_keys(password)
         recovery_active = self.wait_for_visible(loc.recovery_conf_active)
-        assert "ant-switch-checked" in recovery_active.get_attribute("class")
+        with allure.step(f'Проверка, что кнопка активна'):
+            assert "ant-switch-checked" in recovery_active.get_attribute("class")
         # sleep(2)
         with allure.step('Нажатие на кнопку авторизации'):
             self.wait_for_clickable(loc.auth_button).click()

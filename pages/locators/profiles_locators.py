@@ -26,3 +26,5 @@ description_field = (
 # Подтверждение изменения
 apply_modals_button = (
     By.CSS_SELECTOR, '.modal-footer button[nztype="primary"]')
+# Отмена изменений
+cancel_modals_button = (By.XPATH, '//span[text()="Отмена"]')

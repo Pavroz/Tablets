@@ -2,12 +2,7 @@ import allure
 import pytest
 
 
-# name_profile = 'autotest'
-# new_name_profile = 'АВТОТЕСТОВОЕ НАИМЕНОВАНИЕ ПРОФИЛЯ'
-# new_description_profile = 'АВТОТЕСТОВОЕ ОПИСАНИЕ'
-
-# ТЕСТЫ ПАРАЛЛЕЛИТЬ НА ДВА ОКНА
-
+# ТЕСТЫ ПАРАЛЛЕЛИТЬ ТОЛЬКО НА ДВА ОКНА
 @allure.feature('Страница профилей')
 class TestProfiles:
 
@@ -43,7 +38,7 @@ class TestProfiles:
         profiles_page.delete_profile(name)
 
     @allure.story('Позитивные сценарии')
-    @allure.title('Проферка изменения имени и описания профиля')
+    @allure.title('Проверка изменения имени и описания профиля')
     @pytest.mark.profiles
     def test_edit_full_profile(self, auth, profiles_page):
         name = profiles_page.create_profile()
@@ -51,10 +46,35 @@ class TestProfiles:
         profiles_page.delete_profile(new_name_profile)
 
     @allure.story('Позитивные сценарии')
-    @allure.title('Проферка копирования профиля')
+    @allure.title('Проверка копирования профиля')
     @pytest.mark.profiles
     def test_copy_profile(self, auth, profiles_page):
         name = profiles_page.create_profile()
         new_name_profile = profiles_page.copy_profile(name)
         profiles_page.delete_profile(name)
         profiles_page.delete_profile(new_name_profile)
+
+    @allure.story('Негативные сценарии')
+    @allure.title('Проверка создания профиля с существующим наименованием')
+    @pytest.mark.profiles
+    def test_create_existing_profile(self, auth, profiles_page):
+        name = profiles_page.create_profile()
+        profiles_page.create_existing_profile(name)
+        profiles_page.delete_profile(name)
+
+    @allure.story('Негативные сценарии')
+    @allure.title('Проверка копирования профиля с существующим наименованием')
+    @pytest.mark.profiles
+    def test_copy_existing_profile(self, auth, profiles_page):
+        name = profiles_page.create_profile()
+        profiles_page.copy_existing_profile(name)
+        profiles_page.delete_profile(name)
+
+    @allure.story('Негативные сценарии')
+    @allure.title('Проверка максимального количества символов в имени профиля')
+    @pytest.mark.profiles
+    def test_create_max_number_of_characters_profile(self, auth, profiles_page):
+        profiles_page.create_max_number_of_characters_profile()
+
+    def test_create_an_empty_profile(self, auth, profiles_page):
+        profiles_page.create_an_empty_profile()

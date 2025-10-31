@@ -54,7 +54,7 @@ class ProfilesPage(BasePage):
         with allure.step('Создание профиля'):
             try:
                 if name in self.get_all_carts_titles():
-                    print(f'Профиль "{name}" уже существует')
+                    # print(f'Профиль "{name}" уже существует')
                     return None
                 self.wait_for_clickable(loc.create_profile_button).click()
                 self.wait_for_visible(loc.name_field).send_keys(name)
@@ -63,16 +63,22 @@ class ProfilesPage(BasePage):
                 self.wait_for_clickable(loc.apply_modals_button).click()
             except:
                 pass
-        # # Старый вариант функции
-        # self.wait_for_clickable(loc.create_profile_button).click()
-        # self.wait_for_visible(loc.name_field).send_keys(name)
-        # if description:
-        #     self.wait_for_visible(loc.description_field).send_keys(description)
-        # self.wait_for_clickable(loc.apply_modals_button).click()
         # ПРОСТАЯ ПРОВЕРКА - ждем появления профиля по имени
         with allure.step(f'Проверка ожидания появления профиля по его имени - "{name}"'):
             assert self.wait_for_presence((By.XPATH, f'//*[text()="{name}"]'))
         return name
+
+    def create_existing_profile(self, name):
+        """Создает существующий профиль"""
+        with allure.step('Создание существующего профиля профиля'):
+            if name in self.get_all_carts_titles():
+                # print(f'Профиль "{name}" уже существует')
+                self.wait_for_clickable(loc.create_profile_button).click()
+                self.wait_for_clickable(loc.name_field).send_keys(name)
+                with allure.step(f'Проверка, что кнопка создания заблокирована'):
+                    apply_button = self.wait_for_presence(loc.apply_modals_button)
+                    assert apply_button.get_attribute('disabled') == 'true'
+                    self.wait_for_clickable(loc.cancel_modals_button).click()
 
     def delete_profile(self, profile_name):
         """Удаляет профиль по имени"""
@@ -85,7 +91,6 @@ class ProfilesPage(BasePage):
                         (By.XPATH,
                          f'//*[text()="{profile_name}"]//ancestor::prominform-profile-card//span[@nztype="delete"]')
                     )
-
                     delete_button.click()
                     break  # Если клик прошел, выходим из цикла
                 except StaleElementReferenceException:
@@ -184,6 +189,34 @@ class ProfilesPage(BasePage):
             assert self.wait_for_presence((By.XPATH, f'//*[text()="{new_name_profile}"]'))
         return new_name_profile
 
-    def activate_profile(self, name_profile):
-        activate_button = self.wait_for_clickable(loc.activate_profile_button)
-        activate_button.click()
+    def copy_existing_profile(self, name):
+        copy_button = self.wait_for_clickable(
+            (By.XPATH,
+             f'//*[text()="{name}"]//ancestor::prominform-profile-card//span[@nztype="copy"]')
+        )
+        copy_button.click()
+        name_field = self.wait_for_presence(loc.name_field)
+        name_field.clear()
+        name_field.send_keys(name)
+        apply_button = self.wait_for_presence(loc.apply_modals_button)
+        assert apply_button.get_attribute('disabled') == 'true'
+        self.wait_for_clickable(loc.cancel_modals_button).click()
+
+    def create_max_number_of_characters_profile(self, quantity=256):
+        name = ''.join(random.choice(string.ascii_lowercase + string.digits)
+                       for _ in range(quantity))
+        self.wait_for_presence(loc.create_profile_button).click()
+        name_field = self.wait_for_presence(loc.name_field)
+        name_field.send_keys(name)
+        apply_button = self.wait_for_presence(loc.apply_modals_button)
+        assert apply_button.get_attribute('disabled') == 'true'
+
+    def create_an_empty_profile(self):
+        self.wait_for_presence(loc.create_profile_button).click()
+        apply_button = self.wait_for_presence(loc.apply_modals_button)
+        assert apply_button.get_attribute('disabled') == 'true'
+
+
+    # def activate_profile(self, name_profile):
+    #     activate_button = self.wait_for_clickable(loc.activate_profile_button)
+    #     activate_button.click()
