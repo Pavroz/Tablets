@@ -216,6 +216,12 @@ class ProfilesPage(BasePage):
         apply_button = self.wait_for_presence(loc.apply_modals_button)
         assert apply_button.get_attribute('disabled') == 'true'
 
+    def go_to_profile(self, name):
+        go_to_profile_button = self.wait_for_clickable(
+            (By.XPATH,
+             f'//*[text()="{name}"]//ancestor::prominform-profile-card//div[@class="ant-card-body"]')
+        )
+        go_to_profile_button.click()
 
     # def activate_profile(self, name_profile):
     #     activate_button = self.wait_for_clickable(loc.activate_profile_button)

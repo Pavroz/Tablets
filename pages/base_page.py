@@ -3,6 +3,7 @@ from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.by import By
 import allure
 
 class BasePage:
@@ -40,3 +41,7 @@ class BasePage:
         """Ожидание, пока элемент появится в DOM."""
         timeout = timeout or self.default_timeout
         return WebDriverWait(self.driver, timeout).until(EC.presence_of_element_located(locator))
+
+    def got_to_back(self):
+        back_button = (By.CSS_SELECTOR, 'i[nztype="left"]')
+        return self.wait_for_clickable(back_button).click()

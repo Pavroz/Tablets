@@ -4,6 +4,8 @@ from selenium.webdriver.chrome.options import Options
 
 
 from pages.auth_page import AuthPage
+from pages.configuration_page import ConfigurationPage
+from pages.lists_page import ListsPage
 from pages.profiles_page import ProfilesPage
 
 
@@ -34,6 +36,15 @@ def profiles_page(driver):
     return ProfilesPage(driver)
 
 @pytest.fixture()
+def lists_page(driver):
+    """Инициализация страницы участников"""
+    return ListsPage(driver)
+
+@pytest.fixture()
+def configuration_page(driver):
+    return ConfigurationPage(driver)
+
+@pytest.fixture()
 def auth(auth_page):
     """Фикстура для авторизации"""
     auth_page.open()
@@ -41,7 +52,6 @@ def auth(auth_page):
 
 # @pytest.fixture()
 # def create_and_delete_profile(profiles_page):
-#     name_profile = 'autotest'
-#     profiles_page.create_profile()
+#     name = profiles_page.create_profile()
 #     yield
-#     profiles_page.delete_profile(name_profile)
+#     profiles_page.delete_profile(name)
