@@ -21,18 +21,43 @@ class ListsPage(BasePage):
                          for _ in range(length))
         return f'{prefix}{suffix}'
 
+    def go_to_back(self):
+        self.got_to_back()
+
     def create_participant(self):
         # random = self.generate_random()
         self.wait_for_clickable(loc.create_button).click()
+        sleep(2)
         lastname = self.wait_for_visible(loc.lastname_field)
+        sleep(2)
         firstname = self.wait_for_visible(loc.firstname_field)
+        sleep(2)
         lastname.send_keys(self.generate_random())
-        sleep(1)
+        sleep(2)
         firstname.send_keys(self.generate_random())
         sleep(2)
         self.wait_for_clickable(loc.create_button_in_modal).click()
-        sleep(5)
-        self.got_to_back()
+        sleep(2)
+        new_lastname = self.wait_for_presence((By.XPATH, f'//*[text()="{lastname}"]'))
+        return new_lastname.text
+
+    def update_participant(self, name):
+        # name_p = name.text
+        line_to_participant = self.wait_for_presence((By.XPATH, f'//*[text()="{name}"]'))
+        sleep(2)
+        line_to_participant.click()
+        sleep(2)
+        self.wait_for_clickable(loc.edit_button).click()
+        sleep(2)
+        lastname = self.wait_for_visible(loc.lastname_field)
+        sleep(2)
+        firstname = self.wait_for_visible(loc.firstname_field)
+        sleep(2)
+        lastname.send_keys(self.generate_random())
+        sleep(2)
+        firstname.send_keys(self.generate_random())
+        sleep(2)
+        self.wait_for_clickable(loc.save_button_in_modal).click()
         sleep(2)
 
 

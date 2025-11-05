@@ -15,5 +15,6 @@ add_image_button = (By.CSS_SELECTOR, '.ant-upload-select.ant-upload-select-pictu
 
 # Кнопки создания и отмены
 create_button_in_modal = (By.XPATH, '//span[text()="Создать "]')
+save_button_in_modal = (By.XPATH, '//span[text()="Сохранить "]')
 cancel_button_in_modal = (By.XPATH, '//span[text()="Отмена"]')
 cross_button_in_modal = (By.CSS_SELECTOR, '.ant-modal-close-x')
