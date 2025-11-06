@@ -24,7 +24,7 @@ class ProfilesPage(BasePage):
 
     def get_all_carts_titles(self):
         """Получение списка с названиями карточек"""
-        carts = self.wait_for_all_visible(loc.all_carts)
+        carts = self.get_all_carts()
         titles = []
         for cart in carts:
             try:

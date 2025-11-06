@@ -18,7 +18,7 @@ def driver():
     options.add_argument("--incognito")
     options.add_argument("--disable-cache")  # Отключает кэш
     ## Для CI
-    # options.add_argument('--headless') # Запуск без графического интерфейса
+    options.add_argument('--headless') # Запуск без графического интерфейса
     # options.add_argument('--no-sandbox')
     # options.add_argument('--disable-dev-shm-usage')
     driver = webdriver.Chrome(options=options)
