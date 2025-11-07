@@ -76,5 +76,8 @@ class TestProfiles:
     def test_create_max_number_of_characters_profile(self, auth, profiles_page):
         profiles_page.create_max_number_of_characters_profile()
 
+    @allure.story('Негативные сценарии')
+    @allure.title('Проверка дизейбла кнопки сохранения при пустом наименовании профиля')
+    @pytest.mark.profiles
     def test_create_an_empty_profile(self, auth, profiles_page):
         profiles_page.create_an_empty_profile()

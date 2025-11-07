@@ -1,11 +1,10 @@
 from selenium.common import StaleElementReferenceException
 from selenium.webdriver.support.wait import WebDriverWait
-
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
 from pages.base_page import BasePage
 from pages.locators import lists_locators as loc
-from selenium.webdriver.common.by import By
 from time import sleep
-from selenium.webdriver.support import expected_conditions as EC
 import allure
 import random
 import string

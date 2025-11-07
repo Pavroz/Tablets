@@ -1,15 +1,13 @@
 import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-
-
 from pages.auth_page import AuthPage
 from pages.configuration_page import ConfigurationPage
 from pages.lists_page import ListsPage
 from pages.profiles_page import ProfilesPage
 
 
-@pytest.fixture()
+@pytest.fixture(scope='function')
 def driver():
     """Создает и возвращает веб-драйвер с настройками"""
     options = Options()
@@ -18,7 +16,7 @@ def driver():
     options.add_argument("--incognito")
     options.add_argument("--disable-cache")  # Отключает кэш
     ## Для CI
-    options.add_argument('--headless') # Запуск без графического интерфейса
+    options.add_argument("--headless=new") # Запуск без графического интерфейса
     # options.add_argument('--no-sandbox')
     # options.add_argument('--disable-dev-shm-usage')
     driver = webdriver.Chrome(options=options)
@@ -49,6 +47,7 @@ def auth(auth_page):
     """Фикстура для авторизации"""
     auth_page.open()
     auth_page.auth_correct_login_and_password('0', '321')
+    yield auth_page.driver  # возвращаем драйвер (или страницу)
 
 # @pytest.fixture()
 # def create_and_delete_profile(profiles_page):

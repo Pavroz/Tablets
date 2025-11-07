@@ -9,7 +9,7 @@ import allure
 class BasePage:
     base_url = 'http://arm-tablets.01-bfv-server.stroki.loc'
     page_url = None
-    default_timeout = 5  # Устанавливаем таймаут по умолчанию
+    default_timeout = 20  # Устанавливаем таймаут по умолчанию
 
     def __init__(self, driver: WebDriver):
         self.driver = driver

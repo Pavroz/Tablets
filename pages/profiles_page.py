@@ -1,11 +1,10 @@
 from selenium.common import StaleElementReferenceException
 from selenium.webdriver.support.wait import WebDriverWait
-
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
 from pages.base_page import BasePage
 from pages.locators import profiles_locators as loc
-from selenium.webdriver.common.by import By
 from time import sleep
-from selenium.webdriver.support import expected_conditions as EC
 import allure
 import random
 import string
@@ -190,6 +189,7 @@ class ProfilesPage(BasePage):
         return new_name_profile
 
     def copy_existing_profile(self, name):
+        """Копирование существуюшего профиля"""
         copy_button = self.wait_for_clickable(
             (By.XPATH,
              f'//*[text()="{name}"]//ancestor::prominform-profile-card//span[@nztype="copy"]')
