@@ -79,7 +79,9 @@ class AuthPage(BasePage):
         with allure.step('Нажатие кнопки авторизации'):
             self.wait_for_clickable(loc.auth_button).click()
         login_message = self.wait_for_presence(loc.login_validation).text
-        password_message = self.wait_for_clickable(loc.password_validation).text
+        print(login_message)
+        password_message = self.wait_for_presence(loc.password_validation).text
+        print(password_message)
         with allure.step('Проверка валидации пустого логина'):
             assert login_message == 'Пожалуйста, введите логин!'
         with allure.step('Проверка валидации пустого пароля'):
