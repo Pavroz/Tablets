@@ -29,8 +29,8 @@ class ListsPage(BasePage):
         """Создание участника с генерацией значений"""
         with allure.step('Открытие модального окна создания участника'):
             self.wait_for_clickable(loc.create_button).click()
-            lastname_field = self.wait_for_visible(loc.lastname_field)
-            firstname_field = self.wait_for_visible(loc.firstname_field)
+            lastname_field = self.wait_for_presence(loc.lastname_field)
+            firstname_field = self.wait_for_presence(loc.firstname_field)
         # Генерирация строковых значений
         with allure.step('Генерация случайных значений'):
             generated_lastname = self.generate_random()

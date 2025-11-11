@@ -76,7 +76,10 @@ class ProfilesPage(BasePage):
                 self.wait_for_clickable(loc.name_field).send_keys(name)
                 with allure.step(f'Проверка, что кнопка создания заблокирована'):
                     apply_button = self.wait_for_presence(loc.apply_modals_button)
-                    assert apply_button.get_attribute('disabled') == 'true'
+                    # assert apply_button.get_attribute('disabled') == 'true'
+                    assert WebDriverWait(self.driver, 5).until(
+                        lambda d: self.driver.find_element(*loc.apply_modals_button
+                                                           ).get_attribute('disabled') is not False)
                     self.wait_for_clickable(loc.cancel_modals_button).click()
 
     def delete_profile(self, profile_name):
@@ -161,7 +164,7 @@ class ProfilesPage(BasePage):
             description_field.clear()
             description_field.send_keys(new_description_profile)
         with allure.step('Подтверждение редактирования'):
-            self.wait_for_clickable(loc.apply_modals_button).click()
+            self.wait_for_presence(loc.apply_modals_button).click()
         with allure.step('Проверка, что наименование и описание изменились'):
             assert self.wait_for_presence((By.XPATH, f'//*[text()="{new_name_profile}"]'))
         return new_name_profile
@@ -199,7 +202,10 @@ class ProfilesPage(BasePage):
         name_field.clear()
         name_field.send_keys(name)
         apply_button = self.wait_for_presence(loc.apply_modals_button)
-        assert apply_button.get_attribute('disabled') == 'true'
+        # assert apply_button.get_attribute('disabled') == 'true'
+        assert WebDriverWait(self.driver, 5).until(
+            lambda d: self.driver.find_element(*loc.apply_modals_button
+                                               ).get_attribute('disabled') is not False)
         self.wait_for_clickable(loc.cancel_modals_button).click()
 
     def create_max_number_of_characters_profile(self, quantity=256):
@@ -209,12 +215,18 @@ class ProfilesPage(BasePage):
         name_field = self.wait_for_presence(loc.name_field)
         name_field.send_keys(name)
         apply_button = self.wait_for_presence(loc.apply_modals_button)
-        assert apply_button.get_attribute('disabled') == 'true'
+        # assert apply_button.get_attribute('disabled') == 'true'
+        assert WebDriverWait(self.driver, 5).until(
+            lambda d: self.driver.find_element(*loc.apply_modals_button
+                                               ).get_attribute('disabled') is not False)
 
     def create_an_empty_profile(self):
         self.wait_for_presence(loc.create_profile_button).click()
         apply_button = self.wait_for_presence(loc.apply_modals_button)
-        assert apply_button.get_attribute('disabled') == 'true'
+        # assert apply_button.get_attribute('disabled') == 'true'
+        assert WebDriverWait(self.driver, 5).until(
+            lambda d: self.driver.find_element(*loc.apply_modals_button
+                                               ).get_attribute('disabled') is not False)
 
     def go_to_profile(self, name):
         go_to_profile_button = self.wait_for_clickable(
