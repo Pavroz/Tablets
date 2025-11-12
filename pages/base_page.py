@@ -42,6 +42,11 @@ class BasePage:
         timeout = timeout or self.default_timeout
         return WebDriverWait(self.driver, timeout).until(EC.presence_of_element_located(locator))
 
+    def wait_for_invisibility_element_located(self, locator: Tuple[str, str], timeout: int = None) -> WebElement:
+        """Ожидание, пока элемент не пропадет"""
+        timeout = timeout or self.default_timeout
+        return WebDriverWait(self.driver, timeout).until(EC.invisibility_of_element_located(locator))
+
     def got_to_back(self):
         back_button = (By.CSS_SELECTOR, 'i[nztype="left"]')
         return self.wait_for_clickable(back_button).click()

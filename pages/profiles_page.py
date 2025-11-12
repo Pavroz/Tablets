@@ -93,6 +93,7 @@ class ProfilesPage(BasePage):
                         (By.XPATH,
                          f'//*[text()="{profile_name}"]//ancestor::prominform-profile-card//span[@nztype="delete"]')
                     )
+                    self.driver.execute_script('arguments[0].scrollIntoView();', delete_button)
                     delete_button.click()
                     break  # Если клик прошел, выходим из цикла
                 except StaleElementReferenceException:
@@ -116,6 +117,7 @@ class ProfilesPage(BasePage):
                 (By.XPATH,
                  f'//*[text()="{name_profile}"]//ancestor::prominform-profile-card//span[@nztype="edit"]')
             )
+            self.driver.execute_script('arguments[0].scrollIntoView();', edit_button)
             edit_button.click()
         with allure.step('Очистка и заполнение поля ввода "Наименование"'):
             name_field = self.wait_for_clickable(loc.name_field)
@@ -128,6 +130,7 @@ class ProfilesPage(BasePage):
         return new_name_profile
 
     def edit_description_profile(self, name_profile):
+        """Изменение описания профиля"""
         new_description_profile = self.generate_profile_description()
         sleep(1)
         # Поиск кнопки редактирования
@@ -136,15 +139,35 @@ class ProfilesPage(BasePage):
                 (By.XPATH,
                  f'//*[text()="{name_profile}"]//ancestor::prominform-profile-card//span[@nztype="edit"]')
             )
+            self.driver.execute_script('arguments[0].scrollIntoView();', edit_button)
             edit_button.click()
         with allure.step('Очистка и заполнение поля ввода "Описание профиля"'):
             description_field = self.wait_for_visible(loc.description_field)
-            description_field.clear()
+            if description_field is not None:
+                description_field.clear()
             description_field.send_keys(new_description_profile)
         with allure.step('Подтверждение редактирования'):
             self.wait_for_clickable(loc.apply_modals_button).click()
-        with allure.step('Проверка, что описание изменилось'):
-            assert self.wait_for_presence((By.XPATH, f'//*[text()="{name_profile}"]'))
+        with allure.step('Ожидание закрытия модалки'):
+            self.wait_for_invisibility_element_located((By.CSS_SELECTOR, 'nz-modal-container'))
+        with allure.step('Повторное нажатие кнопки редактирования'):
+            for _ in range(3):
+                try:
+                    edit_button = self.wait_for_clickable(
+                        (By.XPATH,
+                         f'//*[text()="{name_profile}"]//ancestor::prominform-profile-card//span[@nztype="edit"]')
+                    )
+                    self.driver.execute_script('arguments[0].scrollIntoView();', edit_button)
+                    edit_button.click()
+                    break
+                except StaleElementReferenceException:
+                    sleep(1)
+                    continue
+            else:
+                raise Exception('Не удалось нажать кнопку редактирования')
+            with allure.step('Проверка, что поле ввода не пустое'):
+                assert self.wait_for_visible(loc.description_field_is_not_null) is not None
+            self.wait_for_visible(loc.cancel_modals_button).click()
         return new_description_profile
 
     def edit_full_profile(self, name_profile):
@@ -155,12 +178,13 @@ class ProfilesPage(BasePage):
                 (By.XPATH,
                  f'//*[text()="{name_profile}"]//ancestor::prominform-profile-card//span[@nztype="edit"]')
             )
+            self.driver.execute_script('arguments[0].scrollIntoView();', edit_button)
             edit_button.click()
         with allure.step('Очистка и заполнение полей ввода "Наименование" и "Описание профиля"'):
-            name_field = self.wait_for_clickable(loc.name_field)
+            name_field = self.wait_for_presence(loc.name_field)
             name_field.clear()
             name_field.send_keys(new_name_profile)
-            description_field = self.wait_for_clickable(loc.description_field)
+            description_field = self.wait_for_presence(loc.description_field)
             description_field.clear()
             description_field.send_keys(new_description_profile)
         with allure.step('Подтверждение редактирования'):
@@ -197,6 +221,7 @@ class ProfilesPage(BasePage):
             (By.XPATH,
              f'//*[text()="{name}"]//ancestor::prominform-profile-card//span[@nztype="copy"]')
         )
+        self.driver.execute_script('arguments[0].scrollIntoView();', copy_button)
         copy_button.click()
         name_field = self.wait_for_presence(loc.name_field)
         name_field.clear()
@@ -233,6 +258,7 @@ class ProfilesPage(BasePage):
             (By.XPATH,
              f'//*[text()="{name}"]//ancestor::prominform-profile-card//div[@class="ant-card-body"]')
         )
+        self.driver.execute_script('arguments[0].scrollIntoView();', go_to_profile_button)
         go_to_profile_button.click()
 
     # def activate_profile(self, name_profile):

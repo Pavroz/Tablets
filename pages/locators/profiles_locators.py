@@ -22,6 +22,7 @@ yes_button_from_delete = (By.XPATH, '//span[contains(text(), "Да")]')
 name_field = (By.CSS_SELECTOR, 'input[formcontrolname="name"]')
 description_field = (
     By.CSS_SELECTOR, 'textarea[formcontrolname="description"]')
+description_field_is_not_null = (By.CSS_SELECTOR, 'textarea.ng-untouched')
 
 # Подтверждение изменения
 apply_modals_button = (
