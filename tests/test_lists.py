@@ -43,3 +43,12 @@ class TestLists:
         #             profiles_page.delete_profile(name)
         #         except Exception as e:
         #             print(f"Не удалось удалить профиль '{name}': {e}")
+
+    def test_delete_participant(self, auth, profiles_page, lists_page, configuration_page):
+        name = profiles_page.create_profile()
+        profiles_page.go_to_profile(name)
+        configuration_page.go_to_lists_page()
+        name_participant = lists_page.create_participant()
+        lists_page.delete_participant(name_participant)
+        lists_page.got_to_back()
+        profiles_page.delete_profile(name)

@@ -71,4 +71,18 @@ class ListsPage(BasePage):
             assert new_lastname.text.strip() == generated_lastname
         return new_lastname.text.strip()
 
+    def delete_participant(self, lastname):
+        """Поиск участника по имении удаление"""
+        with allure.step('Поиск созданного участника и нажатие на него'):
+            line_to_participant = self.wait_for_presence((By.XPATH, f'//*[text()="{lastname}"]'))
+            line_to_participant.click()
+        with allure.step('Нажатие на кнопку удаления'):
+            delete_button = self.wait_for_clickable(loc.delete_button)
+            delete_button.click()
+        with allure.step('Подтверждение удаления'):
+            self.wait_for_clickable(loc.apply_delete_button).click()
+        with allure.step('Проверка, что созданный ранее участник удален'):
+            assert line_to_participant is not None
+        return None
+
 

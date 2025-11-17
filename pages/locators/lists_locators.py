@@ -1,8 +1,9 @@
+import os
+
 from selenium.webdriver.common.by import By
 
 # Создание, удаление и редактирование участника
 create_button = (By.CSS_SELECTOR, '.anticon.anticon-plus')
-delete_button = (By.CSS_SELECTOR, '.anticon.anticon-delete')
 edit_button = (By.CSS_SELECTOR, '.anticon.anticon-edit')
 
 # Модалка создания/редактирования участника
@@ -18,3 +19,10 @@ create_button_in_modal = (By.XPATH, '//span[text()="Создать "]')
 save_button_in_modal = (By.XPATH, '//span[text()="Сохранить "]')
 cancel_button_in_modal = (By.XPATH, '//span[text()="Отмена"]')
 cross_button_in_modal = (By.CSS_SELECTOR, '.ant-modal-close-x')
+
+# Удаление участника
+delete_button = (By.CSS_SELECTOR, '.anticon.anticon-delete')
+apply_delete_button = (By.CSS_SELECTOR, 'button[cdkfocusinitial="true"]')
+
+# Взаимодействие с изображением
+file_path = os.getcwd() + r'\data\image.png'

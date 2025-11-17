@@ -120,13 +120,13 @@ class ProfilesPage(BasePage):
             self.driver.execute_script('arguments[0].scrollIntoView();', edit_button)
             edit_button.click()
         with allure.step('Очистка и заполнение поля ввода "Наименование"'):
-            name_field = self.wait_for_clickable(loc.name_field)
+            name_field = self.wait_for_visible(loc.name_field)
             name_field.clear()
             name_field.send_keys(new_name_profile)
         with allure.step('Подтверждение редактирования'):
             self.wait_for_clickable(loc.apply_modals_button).click()
         with allure.step('Проверка, что наименование изменилось'):
-            assert self.wait_for_presence((By.XPATH, f'//*[text()="{new_name_profile}"]'))
+            assert self.wait_for_visible((By.XPATH, f'//*[text()="{new_name_profile}"]'))
         return new_name_profile
 
     def edit_description_profile(self, name_profile):
