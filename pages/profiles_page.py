@@ -1,4 +1,5 @@
 from selenium.common import StaleElementReferenceException
+from selenium.webdriver import Keys
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
@@ -50,13 +51,15 @@ class ProfilesPage(BasePage):
     def create_profile(self, description=None):
         """Создает профиль и возвращает его имя"""
         name = self.generate_profile_name()
-        with allure.step('Создание профиля'):
+        with (allure.step('Создание профиля')):
             try:
                 if name in self.get_all_carts_titles():
                     # print(f'Профиль "{name}" уже существует')
                     return None
-                self.wait_for_clickable(loc.create_profile_button).click()
-                self.wait_for_visible(loc.name_field).send_keys(name)
+                self.wait_for_presence(loc.create_profile_button).click()
+                name_field = self.wait_for_presence(loc.name_field)
+                name_field.send_keys(name)
+                name_field.send_keys(Keys.TAB)
                 if description:
                     self.wait_for_visible(loc.description_field).send_keys(description)
                 self.wait_for_clickable(loc.apply_modals_button).click()
@@ -123,6 +126,7 @@ class ProfilesPage(BasePage):
             name_field = self.wait_for_visible(loc.name_field)
             name_field.clear()
             name_field.send_keys(new_name_profile)
+            name_field.send_keys(Keys.TAB)
         with allure.step('Подтверждение редактирования'):
             self.wait_for_clickable(loc.apply_modals_button).click()
         with allure.step('Проверка, что наименование изменилось'):
@@ -146,6 +150,7 @@ class ProfilesPage(BasePage):
             if description_field is not None:
                 description_field.clear()
             description_field.send_keys(new_description_profile)
+            description_field.send_keys(Keys.TAB)
         with allure.step('Подтверждение редактирования'):
             self.wait_for_clickable(loc.apply_modals_button).click()
         with allure.step('Ожидание закрытия модалки'):
@@ -184,9 +189,11 @@ class ProfilesPage(BasePage):
             name_field = self.wait_for_presence(loc.name_field)
             name_field.clear()
             name_field.send_keys(new_name_profile)
+            name_field.send_keys(Keys.TAB)
             description_field = self.wait_for_presence(loc.description_field)
             description_field.clear()
             description_field.send_keys(new_description_profile)
+            description_field.send_keys(Keys.TAB)
         with allure.step('Подтверждение редактирования'):
             self.wait_for_presence(loc.apply_modals_button).click()
         with allure.step('Проверка, что наименование и описание изменились'):

@@ -9,11 +9,32 @@ class TestLists:
     @allure.story('Позитивные сценарии')
     @allure.title('Проверка создания участника')
     @pytest.mark.lists
-    def test_created_participant(self, auth, profiles_page, lists_page, configuration_page):
+    @pytest.mark.parametrize("middlename, subject, position, image",
+        [
+            (None, None, None, None),  # только обязательные поля
+            ("middlename", None, None, None),  # + отчество
+            (None, "subject", None, None),  # + субъект
+            (None, None, "position", None),  # + должность
+            (None, None, None, "image"),  # + изображение
+            ("middlename", "subject", "position", "image"),  # всё вместе
+        ]
+    )
+    def test_created_participant(
+            self, auth, profiles_page, lists_page, configuration_page,
+            middlename, subject, position, image
+    ):
         name = profiles_page.create_profile()
         profiles_page.go_to_profile(name)
         configuration_page.go_to_lists_page()
-        lists_page.create_participant()
+
+        # Передаём параметры в метод
+        lists_page.create_participant(
+            middlename=middlename,
+            subject=subject,
+            position=position,
+            image=image
+        )
+
         lists_page.got_to_back()
         profiles_page.delete_profile(name)
 
