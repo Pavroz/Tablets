@@ -107,4 +107,16 @@ class ListsPage(BasePage):
             assert line_to_participant is not None
         return None
 
-
+    def view_added_image(self, lastname):
+        line_to_participant =self.wait_for_presence((By.XPATH, f'//*[text()="{lastname}"]'))
+        line_to_participant.click()
+        self.wait_for_presence(loc.view_image_button).click()
+        if self.wait_for_presence(loc.modal_with_image):
+            assert self.wait_for_presence(loc.modal_with_image).is_displayed()
+        elif self.wait_for_presence(loc.no_image_notification):
+            assert self.wait_for_presence(loc.no_image_notification).text == 'Для участника не загружено изображение!'
+        elif self.wait_for_presence(loc.button_is_disable):
+            assert self.wait_for_presence(loc.button_is_disable).get_attribute('disabled') == 'true'
+        else:
+            return None
+        return None

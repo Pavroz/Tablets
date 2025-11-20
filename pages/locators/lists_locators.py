@@ -26,3 +26,7 @@ apply_delete_button = (By.CSS_SELECTOR, 'button[cdkfocusinitial="true"]')
 
 # Взаимодействие с изображением
 file_path = os.getcwd() + r'\data\image.png'
+view_image_button = (By.XPATH, '//span[text()="Просмотр изображения"]')
+no_image_notification = (By.XPATH, '//div[text()="Для участника не загружено изображение!"]')
+modal_with_image = (By.CSS_SELECTOR, 'div[role="document"]')
+button_is_disable = (By.XPATH, '//button[@disabled="true"]//span[text()="Просмотр изображения"]')

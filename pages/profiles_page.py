@@ -57,9 +57,10 @@ class ProfilesPage(BasePage):
                     # print(f'Профиль "{name}" уже существует')
                     return None
                 self.wait_for_presence(loc.create_profile_button).click()
-                name_field = self.wait_for_presence(loc.name_field)
+                name_field = WebDriverWait(self.driver, 15).until(EC.element_to_be_clickable(loc.name_field))
+                # sleep(1)
                 name_field.send_keys(name)
-                name_field.send_keys(Keys.TAB)
+                # name_field.send_keys(Keys.TAB)
                 if description:
                     self.wait_for_visible(loc.description_field).send_keys(description)
                 self.wait_for_clickable(loc.apply_modals_button).click()
